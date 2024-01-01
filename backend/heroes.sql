@@ -1,0 +1,85 @@
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Anti-Mage',NULL,'melee','agility',315,29,200),
+	 ('Crystal Maiden',NULL,'range','magic',275,41,500),
+	 ('Earthshaker',NULL,'melee','strength',310,27,660),
+	 ('Windranger',NULL,'range','magic',335,30,560),
+	 ('Tidehunter',NULL,'melee','strength',310,31,660),
+	 ('Lion',NULL,'range','magic',290,29,500),
+	 ('Axe',NULL,'melee','strength',290,31,720),
+	 ('Drow Ranger',NULL,'range','agility',285,27,540),
+	 ('Shadow Shaman',NULL,'range','magic',285,44,540),
+	 ('Sven',NULL,'melee','strength',310,48,680);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Phantom Assassin',NULL,'melee','agility',325,23,660),
+	 ('Lich',NULL,'range','magic',315,31,560),
+	 ('Slardar',NULL,'melee','strength',290,30,680),
+	 ('Mirana',NULL,'range','agility',295,29,500),
+	 ('Pudge',NULL,'melee','strength',280,35,800),
+	 ('Vengeful Spirit',NULL,'range','agility',295,30,500),
+	 ('Juggernaut',NULL,'melee','agility',300,29,600),
+	 ('Invoker',NULL,'range','magic',280,29,580),
+	 ('Timbersaw',NULL,'melee','strength',290,26,660),
+	 ('Techies',NULL,'range','magic',270,29,500);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Morphling',NULL,'range','agility',280,33,460),
+	 ('Shadow Fiend',NULL,'range','agility',305,36,500),
+	 ('Wraith King',NULL,'melee','strength',300,41,640),
+	 ('Phantom Lancer',NULL,'melee','agility',335,26,540),
+	 ('Bristleback',NULL,'melee','strength',290,24,800),
+	 ('Riki',NULL,'melee','agility',290,25,580),
+	 ('Enigma',NULL,'range','magic',300,24,500),
+	 ('Sand King',NULL,'melee','strength',295,28,700),
+	 ('Enchantress',NULL,'range','magic',335,30,560),
+	 ('Luna',NULL,'range','agility',330,28,500);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Centaur Warrunner',NULL,'melee','strength',300,36,700),
+	 ('Keeper of the Light',NULL,'range','magic',330,43,500),
+	 ('Witch Doctor',NULL,'range','magic',300,29,500),
+	 ('Undying',NULL,'melee','strength',310,31,720),
+	 ('Rubick',NULL,'range','magic',290,27,520),
+	 ('Sniper',NULL,'range','agility',285,34,500),
+	 ('Troll Warlord',NULL,'melee','agility',300,35,640),
+	 ('Dark Seer',NULL,'melee','magic',295,33,600),
+	 ('Tinker',NULL,'range','magic',305,29,500),
+	 ('Ursa',NULL,'melee','agility',305,28,660);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Terrorblade',NULL,'melee','agility',310,32,600),
+	 ('Phoenix',NULL,'range','strength',285,43,700),
+	 ('Jakiro',NULL,'range','magic',290,29,600),
+	 ('Bloodseeker',NULL,'melee','agility',295,29,580),
+	 ('Lina',NULL,'range','magic',290,35,500),
+	 ('Dragon Knight',NULL,'melee','strength',290,31,660),
+	 ('Wisp',NULL,'range','strength',330,38,550),
+	 ('Outworld Devourer',NULL,'range','magic',315,40,600),
+	 ('Storm Spirit',NULL,'range','magic',285,36,560),
+	 ('Bane',NULL,'range','magic',310,36,600);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Huskar',NULL,'range','strength',285,24,640),
+	 ('Silencer',NULL,'range','magic',295,41,600),
+	 ('Necrophos',NULL,'range','magic',290,33,580),
+	 ('Windrunner',NULL,'range','magic',295,27,500),
+	 ('Chen',NULL,'range','magic',305,29,500),
+	 ('Nyx Assassin',NULL,'melee','agility',305,30,620),
+	 ('Clinkz',NULL,'range','agility',290,26,540),
+	 ('Lycan',NULL,'melee','strength',330,33,650),
+	 ('Oracle',NULL,'range','magic',310,41,550),
+	 ('Winter Wyvern',NULL,'range','magic',285,28,540);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Io',NULL,'range','strength',330,22,500),
+	 ('Underlord',NULL,'melee','strength',330,35,720),
+	 ('Arc Warden',NULL,'range','agility',280,28,600),
+	 ('Legion Commander',NULL,'melee','strength',330,38,720),
+	 ('Tusk',NULL,'melee','strength',350,35,680),
+	 ('Lone Druid',NULL,'range','agility',340,33,540),
+	 ('Meepo',NULL,'melee','agility',330,29,600),
+	 ('Naga Siren',NULL,'range','agility',330,28,540),
+	 ('Nature''s Prophet',NULL,'range','magic',290,27,500),
+	 ('Leshrac',NULL,'range','magic',330,30,520);
+INSERT INTO dota2.hero ("name",avatar,attack_type,"attribute",base_movement,base_damage,base_health) VALUES
+	 ('Ogre Magi',NULL,'range','magic',285,45,600),
+	 ('Omniknight',NULL,'melee','strength',305,31,720),
+	 ('Outhouse Decorator',NULL,'range','magic',315,38,580),
+	 ('Puck',NULL,'range','magic',295,29,500),
+	 ('Pugna',NULL,'range','magic',330,19,580),
+	 ('Queen of Pain',NULL,'range','magic',295,31,520),
+	 ('Razor',NULL,'range','agility',285,29,560);
