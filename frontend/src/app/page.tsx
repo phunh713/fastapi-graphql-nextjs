@@ -1,5 +1,5 @@
 import { graphQLClient } from "@/graphql/client";
-import { Query, queryBuilder } from "@/query";
+import { Query, queryBuilder } from "@/graphql/query";
 import Link from "next/link";
 
 type Skill = {
