@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import { Hero, RootQuery } from "./interface";
 import { graphQLClient } from "@/graphql/client";
 import HeroDisplay from "./HeroDisplay";
+import RandomButton from "./RandomButton";
 
 const HeroCSR = () => {
   const [id, setId] = React.useState<number | undefined>(undefined);
@@ -43,9 +44,7 @@ const HeroCSR = () => {
   return (
     <div>
       <h3>Client Side Rendering</h3>
-      <button onClick={() => setId(Math.floor(Math.random() * 7) + 1)}>
-        random
-      </button>
+      <RandomButton onClick={() => setId(Math.floor(Math.random() * 7) + 1)} />
       {hero && <HeroDisplay hero={hero} />}
     </div>
   );

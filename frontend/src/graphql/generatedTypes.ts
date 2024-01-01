@@ -33,6 +33,7 @@ export function fetcher<TData, TVariables>(
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-store",
       body: JSON.stringify({ query, variables }),
     });
 

@@ -2,7 +2,7 @@ import { graphQLClient } from "@/graphql/client";
 import { Query, queryBuilder } from "@/graphql/utils";
 import { Hero, RootQuery } from "./interface";
 import HeroDisplay from "./HeroDisplay";
-import Link from "next/link";
+import RandomButton from "./RandomButton";
 
 async function HeroSSR({
   searchParams,
@@ -34,10 +34,7 @@ async function HeroSSR({
   return (
     <div>
       <h3>Server Side Rendering</h3>
-      <Link
-        href={`http://localhost:3000/?id=${Math.floor(Math.random() * 7) + 1}`}>
-        <button>Random</button>
-      </Link>
+      <RandomButton />
       {response.hero && <HeroDisplay hero={response.hero} />}
     </div>
   );
