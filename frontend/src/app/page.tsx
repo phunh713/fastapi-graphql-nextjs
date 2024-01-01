@@ -1,6 +1,7 @@
 import { graphQLClient } from "@/graphql/client";
-import { Query, queryBuilder } from "@/graphql/query";
+import { Query, queryBuilder } from "@/graphql/utils";
 import Link from "next/link";
+import HeroButton from "./HeroButton";
 
 type Skill = {
   id: number;
@@ -71,6 +72,7 @@ async function Home({
         href={`http://localhost:3000/?id=${Math.floor(Math.random() * 5) + 1}`}>
         random
       </Link>
+      <HeroButton />
     </main>
   );
 }
