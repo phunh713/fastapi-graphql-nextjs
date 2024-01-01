@@ -1,5 +1,7 @@
 source ./venv/Scripts/activate
 
+docker-compose up -d --build
+
 python ./db_prestart.py
 
 alembic upgrade head

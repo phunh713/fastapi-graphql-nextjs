@@ -52,28 +52,3 @@ export const queryBuilder = <T extends Record<string, any>>(query: {
   };
   return queryKeyToString(query);
 };
-
-const query = {
-  heroes: [
-    {
-      id: 1,
-      name: "1",
-      skills: [
-        {
-          name: "skill 1",
-          description: "des skill 1",
-        },
-      ],
-    },
-  ],
-  hero: (args: { id: number }) => ({
-    id: 2,
-    name: "2",
-    skills: [
-      {
-        name: "skill 2",
-        description: "des skill 2",
-      },
-    ],
-  }),
-};
