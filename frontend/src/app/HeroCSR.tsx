@@ -16,10 +16,18 @@ const HeroCSR = () => {
     if (!id) return undefined;
     return queryBuilder<RootQuery>({
       query: {
+        heroes: {
+          fields: {},
+        },
         hero: {
           variables: { id },
           fields: {
             __typename: true,
+            fragments: {
+              HeroType: {
+                attackType: true,
+              },
+            },
             id: true,
             name: true,
             attackType: true,

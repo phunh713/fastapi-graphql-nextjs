@@ -168,11 +168,15 @@ export const FindHeroesDocument = `
 
 export type RootQuery = {
   __typename?: "RootQuery";
-  heroes: HeroType[];
-  hero: (input: RootQueryHeroArgs) => Maybe<HeroType>;
+  heroes: (HeroType | SkillType)[];
+  hero: (input: RootQueryHeroArgs) => Maybe<HeroType | SkillType>;
   skills: Array<SkillType>;
   skill?: (input: RootQuerySkillArgs) => Maybe<SkillType>;
 };
+
+type Test = Exclude<Maybe<HeroType | SkillType>, null>;
+type Test2 = Extract<Test, number>;
+const test: Test["__typename"] = "HeroType";
 
 export const useFindHeroesQuery = <TData = FindHeroesQuery, TError = unknown>(
   dataSource: { endpoint: string; fetchParams?: RequestInit },

@@ -31,12 +31,29 @@ const isDetailValue = (value: Object): value is DetailValue => {
 
 type Object = Record<string, any>;
 
+type Keys = keyof { test: 1 };
+
 export type QueryBuilder<T extends Object> = {
   [K in keyof T]?: T[K] extends PrimaryValue | PrimaryValue[]
-    ? true | DetailValue | `a ${T[K]}`
+    ? true | DetailValue
     : T[K] extends (args: infer A) => any
     ? {
-        [QUERY_FIELDS_KEY]: QueryBuilder<ReturnType<T[K]>>;
+        [QUERY_FIELDS_KEY]: QueryBuilder<ReturnType<T[K]>> &
+          (Extract<
+            Extract<ReturnType<T[K]>, Object>["__typename"],
+            string
+          > extends string
+            ? {
+                fragments?: {
+                  [X in Extract<
+                    Extract<ReturnType<T[K]>, Object>["__typename"],
+                    string
+                  >]?: QueryBuilder<
+                    Extract<ReturnType<T[K]>, { __typename?: X }>
+                  >;
+                };
+              }
+            : never);
         [QUERY_VARIABLES_KEY]: ExtendedType<A>;
       }
     : T[K] extends Object[] | PrimaryValue
