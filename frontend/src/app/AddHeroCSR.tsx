@@ -73,7 +73,7 @@ function AddHeroCSR() {
       <div>
         <label htmlFor="attribute">attribute</label>
         <input
-          onChange={(e) => setAttribute(Attribute.Agility)}
+          onChange={(e) => setAttribute(e.target.value as Attribute)}
           value={attribute}
           id="attribute"
         />
@@ -81,7 +81,7 @@ function AddHeroCSR() {
       <div>
         <label htmlFor="attackType">attackType</label>
         <input
-          onChange={(e) => setAttackType(AttactType.Melee)}
+          onChange={(e) => setAttackType(e.target.value as AttactType)}
           value={attackType}
           id="attackType"
         />
@@ -92,6 +92,7 @@ function AddHeroCSR() {
           onChange={(e) => setBaseDamage(+e.target.value)}
           value={baseDamage}
           id="baseDamage"
+          type="number"
         />
       </div>
       <div>
@@ -100,6 +101,7 @@ function AddHeroCSR() {
           onChange={(e) => setBaseHealth(+e.target.value)}
           value={baseHealth}
           id="baseHealth"
+          type="number"
         />
       </div>
       <div>
@@ -108,6 +110,7 @@ function AddHeroCSR() {
           onChange={(e) => setBaseMovement(+e.target.value)}
           value={baseMovement}
           id="baseMovement"
+          type="number"
         />
       </div>
 
@@ -118,7 +121,9 @@ function AddHeroCSR() {
         }}>
         Add
       </button>
-      {data && <pre>Data Added: {JSON.stringify(data?.data.data, null, 4)}</pre>}
+      {data && (
+        <pre>Data Added: {JSON.stringify(data?.data.data, null, 4)}</pre>
+      )}
       {error && <pre>Error: {JSON.stringify(error, null, 4)}</pre>}
     </div>
   );
