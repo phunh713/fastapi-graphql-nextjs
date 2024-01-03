@@ -89,10 +89,10 @@ export type SkillType = {
 
 export type RootMutation = {
   __typename?: "RootMutation";
-  addHero: HeroType;
-  addHeroes: Array<HeroType>;
-  addSkill: SkillType;
-  addSkills: Array<SkillType>;
+  addHero: (input: RootMutationAddHeroArgs) => HeroType;
+  addHeroes: (input: RootMutationAddHeroesArgs) => Array<HeroType>;
+  addSkill: (input: RootMutationAddSkillArgs) => SkillType;
+  addSkills: (input: RootMutationAddSkillsArgs) => Array<SkillType>;
 };
 
 export type RootMutationAddHeroArgs = {

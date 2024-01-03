@@ -1,3 +1,4 @@
+import AddHero from "./AddHero";
 import HeroCSR from "./HeroCSR";
 import HeroSSR from "./HeroSSR";
 
@@ -18,6 +19,9 @@ async function Home({
         <div style={{ width: "50%" }}>
           <HeroCSR />
         </div>
+      </div>
+      <div>
+        <AddHero />
       </div>
     </main>
   );

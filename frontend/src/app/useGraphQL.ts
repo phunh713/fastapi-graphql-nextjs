@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { graphQLClient } from "./config";
 import { GraphQLResponse } from "@/graphql/interface";
 import { useEffect } from "react";
@@ -22,4 +22,16 @@ export const useGraphQLQuery = <T>(queryString?: string) => {
   }, [query]);
 
   return query;
+};
+
+export const useGraphQLMutation = <T>(queryString?: string) => {
+  return useMutation({
+    mutationFn: () => {
+      console.log(queryString);
+      // if (!queryString) return Promise.reject(new Error("invalid ID"));
+      if (!queryString) throw new Error("Invalid  GRAPHQL mutation string");
+      return graphQLClient<GraphQLResponse<T>>(queryString);
+    },
+    onError: (err) => console.log({ ERROR: err }),
+  });
 };
