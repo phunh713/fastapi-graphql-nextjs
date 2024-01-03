@@ -5,7 +5,7 @@ import { mutationBuilder } from "@/graphql/utils";
 import React, { useMemo, useState } from "react";
 import { useGraphQLMutation } from "./useGraphQL";
 
-function AddHero() {
+function AddHeroCSR() {
   const [name, setName] = useState("");
   const [attribute, setAttribute] = useState<Attribute>();
   const [attackType, setAttackType] = useState<AttactType>();
@@ -124,4 +124,4 @@ function AddHero() {
   );
 }
 
-export default AddHero;
+export default AddHeroCSR;

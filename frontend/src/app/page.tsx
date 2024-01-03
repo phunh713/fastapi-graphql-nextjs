@@ -1,4 +1,4 @@
-import AddHero from "./AddHero";
+import AddHeroCSR from "./AddHeroCSR";
 import HeroCSR from "./HeroCSR";
 import HeroSSR from "./HeroSSR";
 
@@ -21,7 +21,7 @@ async function Home({
         </div>
       </div>
       <div>
-        <AddHero />
+        <AddHeroCSR />
       </div>
     </main>
   );
