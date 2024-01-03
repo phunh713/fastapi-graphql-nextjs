@@ -7,7 +7,7 @@ const QUERY_DIRECTIVE_KEY = "directive";
 export type ExtendedType<T> = {
   [K in keyof T]: T[K] extends PrimaryValue
     ? T[K] | { value: T[K]; isEnum: boolean }
-    : T[K] extends Record<string, any>
+    : T[K] extends Object
     ? ExtendedType<T[K]>
     : never;
 };
@@ -19,7 +19,7 @@ export type DetailValue = {
   };
 };
 
-const isDetailValue = (value: Record<string, any>): value is DetailValue => {
+const isDetailValue = (value: Object): value is DetailValue => {
   if (
     QUERY_DIRECTIVE_KEY in value &&
     "type" in value.directive &&
@@ -29,40 +29,39 @@ const isDetailValue = (value: Record<string, any>): value is DetailValue => {
   return false;
 };
 
-export type QueryBuilder<T extends Record<string, any>> = {
+type Object = Record<string, any>;
+
+export type QueryBuilder<T extends Object> = {
   [K in keyof T]?: T[K] extends PrimaryValue | PrimaryValue[]
-    ? true | DetailValue
+    ? true | DetailValue | `a ${T[K]}`
     : T[K] extends (args: infer A) => any
-    ? { [QUERY_FIELDS_KEY]: QueryBuilder<ReturnType<T[K]>> } & {
+    ? {
+        [QUERY_FIELDS_KEY]: QueryBuilder<ReturnType<T[K]>>;
         [QUERY_VARIABLES_KEY]: ExtendedType<A>;
       }
-    : T[K] extends Record<string, any>[] | PrimaryValue
+    : T[K] extends Object[] | PrimaryValue
     ?
         | {
-            [QUERY_FIELDS_KEY]: QueryBuilder<
-              Extract<T[K], Record<string, any>[]>[0]
-            >;
+            [QUERY_FIELDS_KEY]: QueryBuilder<Extract<T[K], Object[]>[0]>;
           }
         | DetailValue
-    : T[K] extends Record<string, any> | PrimaryValue
+    : T[K] extends Object | PrimaryValue
     ?
         | {
-            [QUERY_FIELDS_KEY]: QueryBuilder<
-              Extract<T[K], Record<string, any>>
-            >;
+            [QUERY_FIELDS_KEY]: QueryBuilder<Extract<T[K], Object>>;
           }
         | DetailValue
     : never;
 };
 
-export type Query<T extends Record<string, any>> = { query: QueryBuilder<T> };
-export type Mutation<T extends Record<string, any>> = {
+export type Query<T extends Object> = { query: QueryBuilder<T> };
+export type Mutation<T extends Object> = {
   mutation: QueryBuilder<T>;
 };
 
 const tab = (level: number) => Array(level).fill("  ").join("");
 
-const fnArgsToString = (fnArgs: Record<string, any>) => {
+const fnArgsToString = (fnArgs: Object) => {
   const handleArgValue = (value: any): string => {
     if (typeof value === "string") return `"${value}"`;
     if (Array.isArray(value)) {
@@ -93,7 +92,7 @@ const fnArgsToString = (fnArgs: Record<string, any>) => {
   return result.slice(0, -2);
 };
 
-const queryKeyToString = (queries: Record<string, any>, level = 0) => {
+const queryKeyToString = (queries: Object, level = 0) => {
   let result = "";
   for (const queryKey in queries) {
     let loopLevel = level;
@@ -137,14 +136,10 @@ const queryKeyToString = (queries: Record<string, any>, level = 0) => {
   return result;
 };
 
-export const queryBuilder = <T extends Record<string, any>>(
-  query: Query<T>
-) => {
+export const queryBuilder = <T extends Object>(query: Query<T>) => {
   return queryKeyToString(query);
 };
 
-export const mutationBuilder = <T extends Record<string, any>>(
-  mutation: Mutation<T>
-) => {
+export const mutationBuilder = <T extends Object>(mutation: Mutation<T>) => {
   return queryKeyToString(mutation);
 };

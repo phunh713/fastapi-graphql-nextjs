@@ -169,9 +169,9 @@ export const FindHeroesDocument = `
 export type RootQuery = {
   __typename?: "RootQuery";
   heroes: HeroType[];
-  hero: (id: Scalars["ID"]["input"], age: number) => Maybe<HeroType>;
+  hero: (input: RootQueryHeroArgs) => Maybe<HeroType>;
   skills: Array<SkillType>;
-  skill?: (id: Scalars["ID"]["input"]) => Maybe<SkillType>;
+  skill?: (input: RootQuerySkillArgs) => Maybe<SkillType>;
 };
 
 export const useFindHeroesQuery = <TData = FindHeroesQuery, TError = unknown>(

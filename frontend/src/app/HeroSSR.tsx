@@ -19,17 +19,14 @@ async function HeroSSR({
         name: true,
         attackType: {
           directive: {
-            type: "@skip",
+            type: "@include",
             if: true,
           },
         },
         attribute: true,
         skills: {
           fields: {
-            id: true,
             name: true,
-            description: true,
-            type: true,
           },
         },
       },
@@ -50,3 +47,11 @@ async function HeroSSR({
 }
 
 export default HeroSSR;
+
+`
+  query {
+    hero {
+
+    }
+  }
+`;
