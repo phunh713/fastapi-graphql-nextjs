@@ -1,4 +1,3 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -19,36 +18,6 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
-
-export function fetcher<TData, TVariables>(
-  endpoint: string,
-  query: string,
-  requestInit?: RequestInit,
-  variables?: TVariables
-) {
-  return async (): Promise<TData> => {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      ...requestInit,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-      body: JSON.stringify({ query, variables }),
-    });
-
-    const json = await res.json();
-
-    if (json.errors) {
-      const { message } = json.errors[0];
-
-      throw new Error(message);
-    }
-
-    return json.data;
-  };
-}
-
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
@@ -87,7 +56,7 @@ export enum HeroSkillType {
 export type HeroType = {
   __typename?: "HeroType";
   skills: Array<SkillType>;
-  id?: Maybe<Scalars["Int"]["output"]>;
+  id: Scalars["Int"]["output"];
   name: Scalars["String"]["output"];
   avatar?: Maybe<Scalars["String"]["output"]>;
   attackType: AttactType;
@@ -95,6 +64,27 @@ export type HeroType = {
   baseMovement: Scalars["Int"]["output"];
   baseDamage: Scalars["Int"]["output"];
   baseHealth: Scalars["Int"]["output"];
+};
+
+export type SkillCreateInputType = {
+  name: Scalars["String"]["input"];
+  type: HeroSkillType;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  manaCost: Scalars["Int"]["input"];
+  cooldown: Scalars["Int"]["input"];
+  heroId?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type SkillType = {
+  __typename?: "SkillType";
+  hero: HeroType;
+  id: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
+  type: HeroSkillType;
+  description?: Maybe<Scalars["String"]["output"]>;
+  manaCost: Scalars["Int"]["output"];
+  cooldown: Scalars["Int"]["output"];
+  heroId?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type RootMutation = {
@@ -121,6 +111,14 @@ export type RootMutationAddSkillsArgs = {
   input: Array<SkillCreateInputType>;
 };
 
+export type RootQuery = {
+  __typename?: "RootQuery";
+  heroes: Array<HeroType>;
+  hero?: (input: RootQueryHeroArgs) => Maybe<HeroType>;
+  skills: Array<SkillType>;
+  skill?: (input: RootQuerySkillArgs) => Maybe<SkillType>;
+};
+
 export type RootQueryHeroArgs = {
   id: Scalars["ID"]["input"];
 };
@@ -129,68 +127,6 @@ export type RootQuerySkillArgs = {
   id: Scalars["ID"]["input"];
 };
 
-export type SkillCreateInputType = {
-  name: Scalars["String"]["input"];
-  type: HeroSkillType;
-  description?: InputMaybe<Scalars["String"]["input"]>;
-  manaCost: Scalars["Int"]["input"];
-  cooldown: Scalars["Int"]["input"];
-  heroId?: InputMaybe<Scalars["Int"]["input"]>;
-};
+type Test = Maybe<HeroType>;
 
-export type SkillType = {
-  __typename?: "SkillType";
-  hero: HeroType;
-  id?: Maybe<Scalars["Int"]["output"]>;
-  name: Scalars["String"]["output"];
-  type: HeroSkillType;
-  description?: Maybe<Scalars["String"]["output"]>;
-  manaCost: Scalars["Int"]["output"];
-  cooldown: Scalars["Int"]["output"];
-  heroId?: Maybe<Scalars["Int"]["output"]>;
-};
-
-export type FindHeroesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type FindHeroesQuery = {
-  __typename?: "RootQuery";
-  heroes: Array<{ __typename?: "HeroType"; id?: number | null; name: string }>;
-};
-
-export const FindHeroesDocument = `
-    query findHeroes {
-  heroes {
-    id
-    name
-  }
-}
-    `;
-
-export type RootQuery = {
-  __typename?: "RootQuery";
-  heroes: (HeroType | SkillType)[];
-  hero: (input: RootQueryHeroArgs) => Maybe<HeroType | SkillType>;
-  skills: Array<SkillType>;
-  skill?: (input: RootQuerySkillArgs) => Maybe<SkillType>;
-};
-
-type Test = Exclude<Maybe<HeroType | SkillType>, null>;
-type Test2 = Extract<Test, number>;
-const test: Test["__typename"] = "HeroType";
-
-export const useFindHeroesQuery = <TData = FindHeroesQuery, TError = unknown>(
-  dataSource: { endpoint: string; fetchParams?: RequestInit },
-  variables?: FindHeroesQueryVariables,
-  options?: UseQueryOptions<FindHeroesQuery, TError, TData>
-) =>
-  useQuery<FindHeroesQuery, TError, TData>({
-    queryKey:
-      variables === undefined ? ["findHeroes"] : ["findHeroes", variables],
-    queryFn: fetcher<FindHeroesQuery, FindHeroesQueryVariables>(
-      dataSource.endpoint,
-      FindHeroesDocument,
-      dataSource.fetchParams || {},
-      variables
-    ),
-    ...options,
-  });
+type A = Exclude<Test, null>;

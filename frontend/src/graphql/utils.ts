@@ -1,27 +1,20 @@
-export type PrimaryValue = number | string | boolean | null | undefined;
+import {
+  DetailValue,
+  QUERY_DIRECTIVE_KEY,
+  QUERY_FIELDS_KEY,
+  QUERY_FRAGMENTS_KEY,
+  QUERY_VARIABLES_KEY,
+  PureObject,
+  Query,
+  Mutation,
+  GraphQLResponse,
+} from "./interface";
 
-const QUERY_VARIABLES_KEY = "variables";
-const QUERY_FIELDS_KEY = "fields";
-const QUERY_DIRECTIVE_KEY = "directive";
-
-export type ExtendedType<T> = {
-  [K in keyof T]: T[K] extends PrimaryValue
-    ? T[K] | { value: T[K]; isEnum: boolean }
-    : T[K] extends Object
-    ? ExtendedType<T[K]>
-    : never;
-};
-
-export type DetailValue = {
-  [QUERY_DIRECTIVE_KEY]: {
-    type: "@skip" | "@include";
-    if: boolean;
-  };
-};
-
-const isDetailValue = (value: Object): value is DetailValue => {
+const isDetailValue = (value: PureObject): value is DetailValue => {
   if (
     QUERY_DIRECTIVE_KEY in value &&
+    typeof value.directive === "object" &&
+    value.directive !== null &&
     "type" in value.directive &&
     "if" in value.directive
   )
@@ -29,56 +22,14 @@ const isDetailValue = (value: Object): value is DetailValue => {
   return false;
 };
 
-type Object = Record<string, any>;
-
-type Keys = keyof { test: 1 };
-
-export type QueryBuilder<T extends Object> = {
-  [K in keyof T]?: T[K] extends PrimaryValue | PrimaryValue[]
-    ? true | DetailValue
-    : T[K] extends (args: infer A) => any
-    ? {
-        [QUERY_FIELDS_KEY]: QueryBuilder<ReturnType<T[K]>> &
-          (Extract<
-            Extract<ReturnType<T[K]>, Object>["__typename"],
-            string
-          > extends string
-            ? {
-                fragments?: {
-                  [X in Extract<
-                    Extract<ReturnType<T[K]>, Object>["__typename"],
-                    string
-                  >]?: QueryBuilder<
-                    Extract<ReturnType<T[K]>, { __typename?: X }>
-                  >;
-                };
-              }
-            : never);
-        [QUERY_VARIABLES_KEY]: ExtendedType<A>;
-      }
-    : T[K] extends Object[] | PrimaryValue
-    ?
-        | {
-            [QUERY_FIELDS_KEY]: QueryBuilder<Extract<T[K], Object[]>[0]>;
-          }
-        | DetailValue
-    : T[K] extends Object | PrimaryValue
-    ?
-        | {
-            [QUERY_FIELDS_KEY]: QueryBuilder<Extract<T[K], Object>>;
-          }
-        | DetailValue
-    : never;
+export const isGraphQLReponse = (
+  response: Object
+): response is GraphQLResponse<Object> => {
+  if ("data" in response && "errors" in response) return true;
+  return false;
 };
 
-export type Query<T extends Object> = { query: QueryBuilder<T> };
-export type Mutation<T extends Object> = {
-  mutation: QueryBuilder<T>;
-};
-
-const tab = (level: number) => Array(level).fill("  ").join("");
-
-const fnArgsToString = (fnArgs: Object) => {
+const fnArgsToString = (fnArgs: PureObject) => {
   const handleArgValue = (value: any): string => {
     if (typeof value === "string") return `"${value}"`;
     if (Array.isArray(value)) {
@@ -102,16 +53,20 @@ const fnArgsToString = (fnArgs: Object) => {
     return value;
   };
   let result = "";
-  for (const key in fnArgs) {
+  let key: keyof typeof fnArgs;
+  for (key in fnArgs) {
     const value = fnArgs[key];
     result += `${key}: ${handleArgValue(value)}, `;
   }
   return result.slice(0, -2);
 };
 
-const queryKeyToString = (queries: Object, level = 0) => {
+const queryKeyToString = (queries: PureObject, level = 0) => {
   let result = "";
-  for (const queryKey in queries) {
+  const tab = (level: number) => Array(level).fill("  ").join("");
+
+  let queryKey: keyof typeof queries;
+  for (queryKey in queries) {
     let loopLevel = level;
     const thisTab = tab(loopLevel);
     const queryValue = queries[queryKey];
@@ -119,10 +74,22 @@ const queryKeyToString = (queries: Object, level = 0) => {
     if (queryKey === QUERY_VARIABLES_KEY || queryKey === QUERY_DIRECTIVE_KEY) {
       continue;
     }
+
+    // If "fields" in Object
     if (queryKey === QUERY_FIELDS_KEY) {
       const inside = queryKeyToString(queryValue, loopLevel + 1);
 
       result += `${thisTab}${inside}`;
+
+      // if "fragments" in Object
+    } else if (queryKey === QUERY_FRAGMENTS_KEY) {
+      const fragmentLoop = loopLevel + 1;
+      for (const fragmentKey in queryValue) {
+        const inside = queryKeyToString(queryValue[fragmentKey], fragmentLoop);
+        result += `\n${thisTab}... on ${fragmentKey} {${inside}\n${thisTab}}`;
+      }
+
+      // if "variables" in Object
     } else if (
       typeof queryValue === "object" &&
       queryValue !== null &&
@@ -132,10 +99,14 @@ const queryKeyToString = (queries: Object, level = 0) => {
       const argsStr = fnArgsToString(queryValue[QUERY_VARIABLES_KEY]);
 
       result += `\n${thisTab}${queryKey}(${argsStr}) {${inside}\n${thisTab}}`;
+
+      // if no special keys in Object
     } else if (typeof queryValue === "object" && queryValue !== null) {
-      const key = isDetailValue(queryValue)
-        ? `${queryKey} ${queryValue.directive.type}(if: ${queryValue.directive.if})`
-        : queryKey;
+      let key = queryKey;
+      if (isDetailValue(queryValue)) {
+        key = `${queryKey} ${queryValue.directive.type}(if: ${queryValue.directive.if})`;
+      }
+
       const { directive, ...rest } = queryValue;
       let inside = "";
       if (Object.keys(rest).length) {
@@ -146,17 +117,19 @@ const queryKeyToString = (queries: Object, level = 0) => {
       }
 
       result += `\n${thisTab}${key}${inside}`;
-    } else if (queryValue) {
+    } else if (queryValue && !(QUERY_FRAGMENTS_KEY in queries)) {
       result += `\n${thisTab}${queryKey}`;
     }
   }
   return result;
 };
 
-export const queryBuilder = <T extends Object>(query: Query<T>) => {
+export const queryBuilder = <T extends PureObject>(query: Query<T>) => {
   return queryKeyToString(query);
 };
 
-export const mutationBuilder = <T extends Object>(mutation: Mutation<T>) => {
+export const mutationBuilder = <T extends PureObject>(
+  mutation: Mutation<T>
+) => {
   return queryKeyToString(mutation);
 };

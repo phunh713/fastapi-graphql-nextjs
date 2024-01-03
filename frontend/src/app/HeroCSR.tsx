@@ -2,48 +2,40 @@
 
 import { queryBuilder } from "@/graphql/utils";
 import React, { useMemo } from "react";
-import { Hero } from "./interface";
-import { graphQLClient } from "@/graphql/client";
 import HeroDisplay from "./HeroDisplay";
 import RandomButton from "./RandomButton";
 import { RootQuery } from "@/graphql/generatedTypes";
+import { useGraphQLQuery } from "./useGraphQL";
+import { Hero } from "./interface";
 
 const HeroCSR = () => {
   const [id, setId] = React.useState<string | undefined>(undefined);
-  const [hero, setHero] = React.useState<Hero | undefined>(undefined);
 
   const query = useMemo(() => {
     if (!id) return undefined;
     return queryBuilder<RootQuery>({
       query: {
-        heroes: {
-          fields: {},
-        },
         hero: {
-          variables: { id },
+          variables: {
+            id,
+          },
           fields: {
-            __typename: true,
-            fragments: {
-              HeroType: {
-                attackType: true,
-              },
-            },
             id: true,
             name: true,
-            attackType: true,
+            avatar: true,
             attribute: true,
+            attackType: true,
+            baseDamage: true,
+            baseHealth: true,
+            baseMovement: true,
             skills: {
               fields: {
-                __typename: true,
                 id: true,
                 name: true,
-                description: {
-                  directive: {
-                    type: "@include",
-                    if: true,
-                  },
-                },
+                description: true,
                 type: true,
+                cooldown: true,
+                manaCost: true,
               },
             },
           },
@@ -52,22 +44,17 @@ const HeroCSR = () => {
     });
   }, [id]);
 
-  React.useEffect(() => {
-    if (query) {
-      (async () => {
-        const res = await graphQLClient<{ hero: Hero }>(query);
-        setHero(res.hero);
-      })();
-    }
-  }, [query]);
-
+  const { data: res, error } = useGraphQLQuery<{ hero: Hero }>(query);
   return (
     <div>
       <h3>Client Side Rendering</h3>
       <RandomButton
-        onClick={() => setId(`${Math.floor(Math.random() * 7) + 1}`)}
+        onClick={() => setId(`${Math.floor(Math.random() * 10) + 1}`)}
       />
-      {hero && <HeroDisplay hero={hero} />}
+      {res?.hero && <HeroDisplay hero={res.hero} />}
+      <div style={{ color: "red", marginTop: 20 }}>
+        {typeof error === "string" && error}
+      </div>
     </div>
   );
 };

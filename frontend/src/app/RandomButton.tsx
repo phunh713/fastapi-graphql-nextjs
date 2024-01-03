@@ -14,7 +14,7 @@ const RandomButton: React.FC<Props> = ({ onClick }) => {
       onClick();
     } else {
       router.push(
-        `http://localhost:3000/?id=${Math.floor(Math.random() * 7) + 1}`
+        `http://localhost:3000/?id=${Math.floor(Math.random() * 10) + 1}`
       );
     }
   };
