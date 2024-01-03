@@ -1,5 +1,5 @@
 import { graphQLClient } from "@/graphql/client";
-import { Query, queryBuilder } from "@/graphql/utils";
+import { QueryBuilder, queryBuilder } from "@/graphql/utils";
 import { Hero, RootQuery } from "./interface";
 import HeroDisplay from "./HeroDisplay";
 import RandomButton from "./RandomButton";
@@ -10,21 +10,30 @@ async function HeroSSR({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const id = searchParams["id"];
-  const queryArgs: Query<RootQuery> = {};
+  const queryArgs: QueryBuilder<RootQuery> = {};
   if (id) {
-    queryArgs.hero = () => ({
-      fnArgs: { id: +id },
-      id: true,
-      name: true,
-      attackType: true,
-      attribute: true,
-      skills: {
+    queryArgs.hero = {
+      variables: { id: +id },
+      fields: {
         id: true,
         name: true,
-        description: true,
-        type: true,
+        attackType: {
+          directive: {
+            type: "@skip",
+            if: true,
+          },
+        },
+        attribute: true,
+        skills: {
+          fields: {
+            id: true,
+            name: true,
+            description: true,
+            type: true,
+          },
+        },
       },
-    });
+    };
   }
   let response: { hero: Hero } = {} as { hero: Hero };
   if (!!Object.keys(queryArgs).length) {

@@ -13,21 +13,25 @@ const HeroCSR = () => {
 
   const query = useMemo(() => {
     if (!id) return undefined;
-    return queryBuilder<RootQuery>({
+    return queryBuilder({
       query: {
-        hero: () => ({
-          fnArgs: { id },
-          id: true,
-          name: true,
-          attackType: true,
-          attribute: true,
-          skills: {
+        hero: {
+          variables: { id },
+          fields: {
             id: true,
             name: true,
-            description: true,
-            type: true,
+            attackType: true,
+            attribute: true,
+            skills: {
+              fields: {
+                id: true,
+                name: true,
+                description: true,
+                type: true,
+              },
+            },
           },
-        }),
+        },
       },
     });
   }, [id]);
