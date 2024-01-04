@@ -44,9 +44,7 @@ async function HeroSSR({
     <div>
       <h3>Server Side Rendering</h3>
       <RandomButton />
-      {response?.data.data.hero && (
-        <HeroDisplay hero={response.data.data.hero} />
-      )}
+      {response?.data.data && <HeroDisplay hero={response.data.data} />}
     </div>
   );
 }

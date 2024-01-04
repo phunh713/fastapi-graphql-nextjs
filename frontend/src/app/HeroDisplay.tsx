@@ -2,9 +2,10 @@
 
 import React from "react";
 import { Hero } from "./interface";
+import { PureObject } from "@/graphql/interface";
 
 type Props = {
-  hero: Hero;
+  hero: PureObject;
 };
 
 const HeroDisplay: React.FC<Props> = ({ hero }) => {

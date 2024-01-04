@@ -8,6 +8,7 @@ import {
   Query,
   Mutation,
   GraphQLResponse,
+  QUERY_TYPENAME_KEY,
 } from "./interface";
 
 const isDetailValue = (value: PureObject): value is DetailValue => {
@@ -84,6 +85,9 @@ const queryKeyToString = (queries: PureObject, level = 0) => {
       // if "fragments" in Object
     } else if (queryKey === QUERY_FRAGMENTS_KEY) {
       const fragmentLoop = loopLevel + 1;
+      if (QUERY_TYPENAME_KEY in queries) {
+        result += `\n${thisTab}${QUERY_TYPENAME_KEY}`;
+      }
       for (const fragmentKey in queryValue) {
         const inside = queryKeyToString(queryValue[fragmentKey], fragmentLoop);
         result += `\n${thisTab}... on ${fragmentKey} {${inside}\n${thisTab}}`;

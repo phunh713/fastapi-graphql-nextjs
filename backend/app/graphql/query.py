@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 
 from strawberry import type, field, ID
 from strawberry.types import Info
@@ -40,5 +40,19 @@ class SkillQuery:
 
 
 @type
-class RootQuery(HeroQuery, SkillQuery):
+class AllQuery:
+    @field
+    def all(self, info: Info[CustomContext, Any]) -> List[Union[SkillType, HeroType]]:
+        hero_service = info.context.hero_service
+        heroes_db = hero_service.get_all()
+        heroes = [HeroType.from_pydantic(hero) for hero in heroes_db]
+
+        skill_service = info.context.skill_service
+        skills_db = skill_service.get_all()
+        skills = [SkillType.from_pydantic(skill) for skill in skills_db]
+        return heroes + skills
+
+
+@type
+class RootQuery(HeroQuery, SkillQuery, AllQuery):
     pass

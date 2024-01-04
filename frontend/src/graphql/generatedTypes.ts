@@ -113,10 +113,11 @@ export type RootMutationAddSkillsArgs = {
 
 export type RootQuery = {
   __typename?: "RootQuery";
-  heroes: Array<HeroType>;
+  heroes: Maybe<Array<HeroType>>;
   hero?: (input: RootQueryHeroArgs) => Maybe<HeroType>;
   skills: Array<SkillType>;
   skill?: (input: RootQuerySkillArgs) => Maybe<SkillType>;
+  all: Array<SkillTypeHeroType>;
 };
 
 export type RootQueryHeroArgs = {
@@ -127,6 +128,4 @@ export type RootQuerySkillArgs = {
   id: Scalars["ID"]["input"];
 };
 
-type Test = Maybe<HeroType>;
-
-type A = Exclude<Test, null>;
+export type SkillTypeHeroType = SkillType | HeroType;

@@ -53,6 +53,7 @@ type RootQuery {
   hero(id: ID!): HeroType
   skills: [SkillType!]!
   skill(id: ID!): SkillType
+  all: [SkillTypeHeroType!]!
 }
 
 input SkillCreateInputType {
@@ -74,3 +75,5 @@ type SkillType {
   cooldown: Int!
   heroId: Int
 }
+
+union SkillTypeHeroType = SkillType | HeroType

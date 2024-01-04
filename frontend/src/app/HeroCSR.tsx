@@ -22,19 +22,12 @@ const HeroCSR = () => {
           fields: {
             id: true,
             name: true,
-            avatar: true,
-            attribute: true,
             attackType: true,
-            baseDamage: true,
-            baseHealth: true,
-            baseMovement: true,
+            attribute: true,
             skills: {
               fields: {
                 id: true,
                 name: true,
-                description: true,
-                type: true,
-                cooldown: true,
                 manaCost: true,
               },
             },
@@ -44,17 +37,24 @@ const HeroCSR = () => {
     });
   }, [id]);
 
-  const { data: res, error } = useGraphQLQuery<{ hero: Hero }>(query);
+  const {
+    data: res,
+    error,
+    isFetching,
+  } = useGraphQLQuery<{ hero: Hero }>(query);
   return (
     <div>
       <h3>Client Side Rendering</h3>
       <RandomButton
         onClick={() => setId(`${Math.floor(Math.random() * 10) + 1}`)}
       />
-      {res?.hero && <HeroDisplay hero={res.hero} />}
-      <div style={{ color: "red", marginTop: 20 }}>
-        {typeof error === "string" && error}
-      </div>
+      {isFetching && <div>Loading....</div>}
+      {res && <HeroDisplay hero={res} />}
+      {error && (
+        <div style={{ color: "red", marginTop: 20 }}>
+          {typeof error === "string" && error}
+        </div>
+      )}
     </div>
   );
 };

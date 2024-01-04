@@ -1,9 +1,12 @@
+import { HeroType, SkillType } from "./generatedTypes";
+
 export type PrimaryValue = number | string | boolean | null | undefined;
 
 export const QUERY_VARIABLES_KEY = "variables";
 export const QUERY_FIELDS_KEY = "fields";
 export const QUERY_DIRECTIVE_KEY = "directive";
 export const QUERY_FRAGMENTS_KEY = "fragments";
+export const QUERY_TYPENAME_KEY = "__typename";
 
 type GraphQLResponseError = {
   message: string;
@@ -39,33 +42,54 @@ type Fragment<T> = {
   };
 };
 
+type IsRecordsUnion<
+  T extends PureObject,
+  P extends string = keyof T & string
+> = Extract<
+  { [K in keyof T as K extends P ? K : "__isUnion__"]: true },
+  { __isUnion__: true }
+> extends never
+  ? false
+  : true;
+
+type GetQueryBuilder<T extends PureObject> = IsRecordsUnion<T> extends true
+  ? QueryBuilder<{ __typename: string }>
+  : QueryBuilder<T>;
+
+type Test = IsRecordsUnion<HeroType | SkillType>;
+
 export type QueryBuilder<T extends PureObject> = {
   [K in keyof T]?: T[K] extends PrimaryValue | PrimaryValue[]
     ? true | DetailValue
     : T[K] extends ((args: infer A) => any) | PrimaryValue
     ? {
-        [QUERY_FIELDS_KEY]: QueryBuilder<
-          ReturnType<Exclude<T[K], PrimaryValue>>
+        [QUERY_FIELDS_KEY]: GetQueryBuilder<
+          Exclude<ReturnType<Extract<T[K], (args: any) => any>>, null>
         > &
           (Extract<
-            Extract<ReturnType<T[K]>, PureObject>["__typename"],
+            Extract<
+              ReturnType<Exclude<T[K], PrimaryValue>>,
+              PureObject
+            >["__typename"],
             string
           > extends string
-            ? Fragment<ReturnType<T[K]>>
+            ? Fragment<ReturnType<Exclude<T[K], PrimaryValue>>>
             : never);
         [QUERY_VARIABLES_KEY]: ExtendedType<A>;
       }
     : T[K] extends PureObject[] | PrimaryValue
     ?
         | {
-            [QUERY_FIELDS_KEY]: QueryBuilder<Extract<T[K], PureObject[]>[0]> &
+            [QUERY_FIELDS_KEY]: GetQueryBuilder<
+              Extract<T[K], PureObject[]>[0]
+            > &
               Fragment<Extract<T[K], PureObject[]>[0]>;
           }
         | DetailValue
     : T[K] extends PureObject | PrimaryValue
     ?
         | {
-            [QUERY_FIELDS_KEY]: QueryBuilder<Extract<T[K], PureObject>> &
+            [QUERY_FIELDS_KEY]: GetQueryBuilder<Extract<T[K], PureObject>> &
               Fragment<Extract<T[K], PureObject>>;
           }
         | DetailValue

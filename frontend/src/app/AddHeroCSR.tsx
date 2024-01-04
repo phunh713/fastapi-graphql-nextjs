@@ -118,7 +118,8 @@ function AddHeroCSR() {
         onClick={() => {
           console.log("add");
           addHero();
-        }}>
+        }}
+      >
         Add
       </button>
       {data && (
