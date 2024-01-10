@@ -122,24 +122,6 @@ export type RemoveKey<T extends PureObject> = "_remove_" extends keyof T
     }
   : { [K in keyof T]: T[K] extends PrimaryValue | PureObject[] ? T[K] : RemoveKey<Extract<T[K], PureObject>> };
 
-// export type MapQuery<T extends PureObject, Map> = {
-//   [K in keyof T]: K extends keyof Map
-//     ? Map[K] extends PrimaryValue
-//       ? Map[K]
-//       : Map[K] extends PureObject | PrimaryValue
-//         ? MapQuery<T[K], Extract<Map[K], PureObject>>
-//         : Map[K] extends ((args: any) => infer R) | PrimaryValue
-//           ? R extends PrimaryValue
-//             ? R
-//             : R extends PureObject[] | PrimaryValue
-//               ? MapQuery<T[K], Extract<R, PureObject[]>>
-//               : R extends PureObject | PrimaryValue
-//                 ? MapQuery<T[K], Extract<R, PureObject>>
-//                 : never
-//           : "Map[K]"
-//     : never;
-// };
-
 export type MapQuery<T extends PureObject, Map> = {
   [K in keyof T]: K extends keyof Map
     ? Map[K] extends PrimaryValue
