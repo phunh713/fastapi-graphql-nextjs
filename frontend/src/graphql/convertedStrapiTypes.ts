@@ -232,8 +232,8 @@ export type BlogInput = {
 
 export type Blog = {
   __typename?: 'Blog';
-  Title: Scalars['String']['output'];
-  Content: Scalars['JSON']['output'];
+  Title?: Scalars['String']['output'];
+  Content?: Scalars['JSON']['output'];
   Author?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;

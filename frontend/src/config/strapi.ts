@@ -5,6 +5,7 @@ import {
   PureObject,
   RemoveKey,
   Mutation as GraphQLMutation,
+  MapQuery,
 } from "@/graphql/interface";
 import axios from "axios";
 
@@ -27,9 +28,9 @@ export const strapiQueryClient = <T extends GraphQLQuery<Query>>(query: T) => {
     query: infer U;
   }
     ? U extends PureObject
-      ? RemoveKey<MapRemove<U>>
-      : {}
-    : {};
+      ? MapQuery<RemoveKey<MapRemove<U>>, Query>
+      : never
+    : never;
 };
 const obj = strapiQueryClient({
   query: {
@@ -65,3 +66,5 @@ const obj = strapiQueryClient({
     },
   },
 });
+
+obj.blogs.data;
