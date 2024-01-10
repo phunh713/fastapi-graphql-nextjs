@@ -27,9 +27,7 @@ const pureQuery: Query<StrapiQuery> = {
 } as const satisfies Query<StrapiQuery>;
 
 const b: typeof pureQuery = {
-  query: {
-
-  },
+  query: {},
 };
 
 const blogQuery = queryBuilder<StrapiQuery>({
