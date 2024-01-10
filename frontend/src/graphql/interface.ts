@@ -144,18 +144,12 @@ export type MapQuery<T extends PureObject, Map> = {
   [K in keyof T]: K extends keyof Map
     ? Map[K] extends PrimaryValue
       ? Map[K]
-      : Map[K] extends PureObject | PrimaryValue
-        ? MapQuery<T[K], Extract<Map[K], PureObject>>
+      : Map[K] extends ((arg: any) => infer R) | PrimaryValue
+        ? MapQuery<T[K], Extract<R, PureObject>>
         : Map[K] extends PureObject[] | PrimaryValue
-          ? MapQuery<T[K], Extract<Map[K], PureObject[]>[0]>
-          : Map[K] extends ((arg: any) => infer R) | PrimaryValue
-            ? R extends PrimaryValue
-              ? R
-              : R extends PureObject[] | PrimaryValue
-                ? MapQuery<T[K], Extract<R, PureObject[]>[0]>
-                : R extends PureObject | PrimaryValue
-                  ? MapQuery<T[K], Extract<R, PureObject>>
-                  : "never1"
+          ? MapQuery<T[K], Extract<Map[K], PureObject[]>[0]>[]
+          : Map[K] extends PureObject | PrimaryValue
+            ? MapQuery<T[K], Extract<Map[K], PureObject>>
             : "never2"
-    : T;
+    : "never1";
 };
