@@ -4,7 +4,6 @@ import HeroDisplay from "./HeroDisplay";
 import RandomButton from "./RandomButton";
 import { GraphQLResponse, QueryBuilder } from "@/graphql/interface";
 import { graphQLClient } from "./config";
-import { Query } from "@/graphql/convertedStrapiTypes";
 
 async function HeroSSR({
   searchParams,
@@ -35,30 +34,6 @@ async function HeroSSR({
       },
     };
   }
-
-  const strapiQuery = queryBuilder<Query>({
-    query: {
-      blog: {
-        variables: {
-          id: "1",
-        },
-        fields: {
-          data: {
-            fields: {
-              attributes: {
-                fields: {
-                  author: true,
-                  content: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  console.log(strapiQuery);
 
   let response;
   if (Object.keys(queryArgs).length) {

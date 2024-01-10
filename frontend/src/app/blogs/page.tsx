@@ -2,7 +2,7 @@ import { Query as StrapiQuery } from "@/graphql/convertedStrapiTypes";
 import { queryBuilder } from "@/graphql/utils";
 import React from "react";
 import { graphQLClient } from "../config";
-import { strapiClient } from "@/config/strapi";
+import { strapiQueryClient } from "@/config/strapi";
 import { Query } from "@/graphql/interface";
 
 const pureQuery: Query<StrapiQuery> = {
@@ -63,7 +63,7 @@ const blogQuery = queryBuilder<StrapiQuery>({
 
 const BlogsPage = async () => {
   const data = await graphQLClient(blogQuery);
-  const strapiData = await strapiClient(blogQuery);
+  const strapiData = await strapiQueryClient(blogQuery);
   console.log(strapiData);
   return (
     <div>
