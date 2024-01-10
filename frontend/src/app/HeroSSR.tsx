@@ -4,7 +4,7 @@ import HeroDisplay from "./HeroDisplay";
 import RandomButton from "./RandomButton";
 import { GraphQLResponse, QueryBuilder } from "@/graphql/interface";
 import { graphQLClient } from "./config";
-import { Query } from "@/graphql/strapiGeneratedTypes";
+import { Query } from "@/graphql/convertedStrapiTypes";
 
 async function HeroSSR({
   searchParams,
