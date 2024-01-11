@@ -12,7 +12,7 @@ import { queryBuilder } from "@/graphql/utils";
 import axios, { AxiosResponse } from "axios";
 
 const baseClient = axios.create({
-  baseURL: "http://172.16.2.186:1337/graphql",
+  baseURL: "https://paf-dev.tpptechnology.com/strapi/graphql",
   headers: {
     "Content-Type": "application/json",
   },
