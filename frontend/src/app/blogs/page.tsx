@@ -1,6 +1,8 @@
 import React from "react";
 import { strapiQueryClient } from "@/config/strapi";
 
+export const revalidate = 0;
+
 const BlogsPage = async () => {
   const strapiData = await strapiQueryClient({
     query: {
