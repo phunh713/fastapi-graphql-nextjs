@@ -10,6 +10,7 @@ import {
 } from "@/graphql/interface";
 import { queryBuilder } from "@/graphql/utils";
 import axios, { AxiosResponse } from "axios";
+import { cache } from "react";
 
 const baseClient = axios.create({
   baseURL: "https://paf-dev.tpptechnology.com/strapi/graphql",
@@ -18,7 +19,7 @@ const baseClient = axios.create({
   },
 });
 
-export const strapiQueryClient = async <T extends GraphQLQuery<Query>>(rawQuery: T) => {
+export const strapiQueryClient = cache(async <T extends GraphQLQuery<Query>>(rawQuery: T) => {
   const query = queryBuilder<Query>(rawQuery);
   console.log(query);
   const result = await baseClient.post("", { query });
@@ -34,4 +35,4 @@ export const strapiQueryClient = async <T extends GraphQLQuery<Query>>(rawQuery:
         : never
     >
   >;
-};
+});
