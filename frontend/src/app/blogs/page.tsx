@@ -11,7 +11,7 @@ const BlogsPage = async () => {
           sort: ["createdAt:desc"],
           pagination: {
             page: 1,
-            pageSize: 5,
+            pageSize: 4,
           },
         },
         fields: {
