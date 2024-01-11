@@ -17,3 +17,8 @@ export type RootQuery = {
   heroes: Hero[];
   hero: (args: { id: number }) => Hero;
 };
+
+export type NextPageProps = {
+  params: { [key: string]: any };
+  searchParams: { [key: string]: string | string[] | undefined };
+};

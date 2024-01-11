@@ -2,8 +2,6 @@ import AddHeroCSR from "./AddHeroCSR";
 import HeroCSR from "./HeroCSR";
 import HeroSSR from "./HeroSSR";
 
-export const revalidate = 0;
-
 async function Home({
   searchParams,
 }: Readonly<{

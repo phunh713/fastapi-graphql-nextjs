@@ -9,12 +9,11 @@ const graphQLBaseAxiosClient = axios.create({
 });
 
 graphQLBaseAxiosClient.interceptors.response.use((response) => {
-  if (isGraphQLReponse(response.data) && response.data.errors.length) {
-    return Promise.reject(response.data.errors[0].message);
+  if (isGraphQLReponse(response.data) && response.data.error && response.data.error.errors.length) {
+    return Promise.reject(response.data.error.errors[0].message);
   }
 
   return response;
 });
 
-export const graphQLClient = <T = any>(query: string) =>
-  graphQLBaseAxiosClient.post<T>("", { query });
+export const graphQLClient = <T = any>(query: string) => graphQLBaseAxiosClient.post<T>("", { query });

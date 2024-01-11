@@ -15,7 +15,7 @@ type GraphQLResponseError = {
 
 export type GraphQLResponse<T> = {
   data: T;
-  errors: GraphQLResponseError[];
+  error?: { errors: GraphQLResponseError[] };
 };
 
 export type ExtendedType<T> = {
