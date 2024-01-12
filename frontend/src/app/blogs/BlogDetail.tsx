@@ -1,12 +1,11 @@
-import { NextPageProps } from "@/app/interface";
 import { strapiQueryClient } from "@/config/strapi";
 import React from "react";
 
-export const revalidate = 90;
+type Props = {
+  id: string;
+};
 
-const BlogPage = async (props: NextPageProps) => {
-  const id = props.params.id;
-
+const BlogDetail: React.FC<Props> = async ({ id }) => {
   if (!id) return <div>Invalid blog ID</div>;
 
   const data = await strapiQueryClient({
@@ -32,7 +31,7 @@ const BlogPage = async (props: NextPageProps) => {
       },
     },
   });
-  console.log(data.data);
+
   if (data.data.error && data.data.error.errors.length) return <div>Cannot get Blog</div>;
   return (
     <div>
@@ -41,4 +40,4 @@ const BlogPage = async (props: NextPageProps) => {
   );
 };
 
-export default BlogPage;
+export default BlogDetail;

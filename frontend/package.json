@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "gen": "tsx ./src/genStatic.ts",
     "dev": "node ./convertStrapiTypes.js && next dev",
-    "build": "node ./convertStrapiTypes.js && next build",
+    "build": "node ./convertStrapiTypes.js && tsx ./src/genStatic.ts && next build",
     "start": "node ./convertStrapiTypes.js && next start",
     "lint": "node ./convertStrapiTypes.js && next lint"
   },
@@ -29,6 +30,7 @@
     "postcss": "^8",
     "prettier": "3.1.1",
     "tailwindcss": "^3.3.0",
+    "tsx": "^4.7.0",
     "typescript": "^5"
   }
 }

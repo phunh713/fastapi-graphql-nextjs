@@ -4,7 +4,6 @@ import {
   Query as GraphQLQuery,
   PureObject,
   RemoveKey,
-  Mutation as GraphQLMutation,
   MapQuery,
   GraphQLResponse,
 } from "@/graphql/interface";

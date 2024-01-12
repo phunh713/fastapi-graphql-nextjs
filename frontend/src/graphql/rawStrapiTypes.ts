@@ -215,6 +215,7 @@ export type BlogFiltersInput = {
   title?: InputMaybe<StringFilterInput>;
   author?: InputMaybe<StringFilterInput>;
   content?: InputMaybe<JsonFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
@@ -227,6 +228,7 @@ export type BlogInput = {
   title?: InputMaybe<Scalars["String"]["input"]>;
   author?: InputMaybe<Scalars["String"]["input"]>;
   content?: InputMaybe<Scalars["JSON"]["input"]>;
+  slug?: InputMaybe<Scalars["String"]["input"]>;
   publishedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
 };
 
@@ -235,6 +237,7 @@ export type Blog = {
   title: Scalars["String"]["output"];
   author: Scalars["String"]["output"];
   content: Scalars["JSON"]["output"];
+  slug: Scalars["String"]["output"];
   createdAt?: Maybe<Scalars["DateTime"]["output"]>;
   updatedAt?: Maybe<Scalars["DateTime"]["output"]>;
   publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
