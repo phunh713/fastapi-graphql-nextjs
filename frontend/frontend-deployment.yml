@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    project: phong
+    svc: phong
+    kind: deployment
+  name: phong-deployment
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phong
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: phong
+    spec:
+      # affinity:
+      #   nodeAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #       - weight: 1
+      #         preference:
+      #           matchExpressions:
+      #             - key: eks.amazonaws.com/nodegroup
+      #               operator: In
+      #               values:
+      #                 - operato-1
+      # imagePullSecrets:
+      #   - name: test
+      containers:
+        - image: fssstaging.azurecr.io/phongtest:latest
+          imagePullPolicy: Always
+          name: phong
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+                # resources:
+                #   limits:
+                #     cpu: "1"
+                #     memory: 1Gi
+                #nodeSelector:
+                #   unittype: generic
+          securityContext:
+            privileged: false
+          # volumeMounts:
+          #   - name: config-volume
+          #     mountPath: /app/config.production.js
+          #     subPath: config.production.js
+          # volumes:
+          #   - name: config-volume
+          #     configMap:
+          #       name: operato-wms-cfgmap
+          # envFrom:
+          #   - configMapRef:
+          #       name: api-gateway.env.cf
+            # - secretRef:
+            #     name: postgres-secrets
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    project: phong
+    svc: phong
+    kind: service
+  namespace: test
+  name: phong-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: phong-service
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: phong
+status:
+  loadBalancer: {}
+
+---
