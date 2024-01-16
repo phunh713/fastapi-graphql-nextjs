@@ -17,6 +17,7 @@ env:
 jobs:
   buildImage:
     runs-on: ubuntu-latest
+    environment: Production
     steps:
       # Logs in with your Azure credentials
       - name: Azure login
