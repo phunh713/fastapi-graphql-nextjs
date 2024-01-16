@@ -13,6 +13,7 @@ env:
   RESOURCE_GROUP: "FSS-staging"
   CLUSTER_NAME: "fss-staging"
   DEPLOYMENT_MANIFEST_PATH: "./frontend/frontend-deployment.yml"
+  NAMESPACE: "test"
 
 jobs:
   buildImage:
@@ -32,6 +33,7 @@ jobs:
       - name: Build and push image to ACR
         run: |
           cd frontend
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} -f frontend.dockerfile --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} .
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,11 +43,6 @@ jobs:
       # Checks out the repository this file is in
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: debug
-        run: |
-          pwd
-          ls -R
 
       # Logs in with your Azure credentials
       - name: Azure login
@@ -74,5 +71,6 @@ jobs:
         with:
           action: deploy
           manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
+          namespace: ${{ env.NAMESPACE }}
           images: |
             ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
