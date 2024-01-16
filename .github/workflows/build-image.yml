@@ -12,7 +12,7 @@ env:
   CONTAINER_NAME: "phongtest"
   RESOURCE_GROUP: "FSS-staging"
   CLUSTER_NAME: "fss-staging"
-  DEPLOYMENT_MANIFEST_PATH: "/frontend/frontend-deployment.yml"
+  DEPLOYMENT_MANIFEST_PATH: "./frontend/frontend-deployment.yml"
 
 jobs:
   buildImage:
