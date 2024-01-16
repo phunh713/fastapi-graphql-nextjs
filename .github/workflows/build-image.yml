@@ -25,9 +25,13 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       # Builds and pushes an image up to your Azure Container Registry
       - name: Build and push image to ACR
         run: |
+          pwd
           ls -R
           cd $GITHUB_WORKSPACE/fastapi-graphql-nextjs/frontend
           az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} -f frontend.dockerfile --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} .
