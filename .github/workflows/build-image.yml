@@ -65,12 +65,7 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
-      # Deploys application based on given manifest file
-      - name: Deploys application
-        uses: Azure/k8s-deploy@v4
-        with:
-          action: deploy
-          manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
-          namespace: ${{ env.NAMESPACE }}
-          images: |
-            ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:latest
+
+      - name: Deploy application
+        run: |
+          kubectl rollout restart deployment/phong-deployment -n test
