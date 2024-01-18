@@ -24,7 +24,7 @@ async function removeFoldersInsideBlogs(folderPath: string) {
 }
 
 const getData = async (query: string) => {
-  const data = await fetch("https://paf-dev.tpptechnology.com/strapi/graphql", {
+  const data = await fetch("http://4.156.32.218:1337/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

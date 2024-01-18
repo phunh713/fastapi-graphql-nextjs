@@ -12,7 +12,7 @@ import axios, { AxiosResponse } from "axios";
 import { cache } from "react";
 
 const baseClient = axios.create({
-  baseURL: "https://paf-dev.tpptechnology.com/strapi/graphql",
+  baseURL: "http://4.156.32.218:1337/graphql",
   headers: {
     "Content-Type": "application/json",
   },
