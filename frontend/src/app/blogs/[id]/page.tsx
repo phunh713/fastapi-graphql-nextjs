@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 }
 
 const BlogPage = async ({ params }: NextPageProps) => {
-  const id = params.id;
+  const { id } = params;
   if (!id) return <div>Invalid blog ID</div>;
 
   const data = await strapiQueryClient({

@@ -64,7 +64,7 @@ const BlogsPage = async ({ searchParams }: NextPageProps) => {
               <p>
                 <strong>Created At:</strong> {new Date(blog.attributes.createdAt).toLocaleString()}
               </p>
-              <Link href={`/blogs/${blog.attributes.slug}`}>Read More</Link>
+              <Link href={`/blogs/${blog.id}`}>Read More</Link>
             </Card>
           );
         })}
