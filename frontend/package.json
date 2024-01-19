@@ -5,7 +5,7 @@
   "scripts": {
     "gen": "tsx ./src/genStatic.ts",
     "dev": "node ./convertStrapiTypes.js && next dev",
-    "build": "node ./convertStrapiTypes.js && tsx ./src/genStatic.ts && next build",
+    "build": "node ./convertStrapiTypes.js && next build",
     "start": "node ./convertStrapiTypes.js && next start",
     "lint": "node ./convertStrapiTypes.js && next lint"
   },
